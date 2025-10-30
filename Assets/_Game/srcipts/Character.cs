@@ -40,13 +40,16 @@ public class Character : MonoBehaviour
         _zInput = Input.GetAxisRaw(VerticalNameInput);
 
         if (Input.GetButtonDown(JumpNameInput) && IsGrounded && _isFreezed == false)
-            Jump();
+            _jumpInput = true;
     }
 
     private void FixedUpdate()
     {
         if (_isFreezed == false)
             Move();
+
+        if (_jumpInput)
+            Jump();
     }
 
     private void OnCollisionStay(Collision other)
@@ -85,6 +88,7 @@ public class Character : MonoBehaviour
     {
         _vfx.Jump(transform.position);
         _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+        _jumpInput = false;
     }
 
     public void Teleport(Vector3 position) => transform.position = position;
