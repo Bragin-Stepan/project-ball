@@ -699,6 +699,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f45b24df7b0b07f47a30a46b79810bc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rotationSpeed: 2
 --- !u!1 &481005564
 GameObject:
   m_ObjectHideFlags: 0
@@ -1168,6 +1169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f45b24df7b0b07f47a30a46b79810bc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rotationSpeed: 2
 --- !u!4 &724515810
 Transform:
   m_ObjectHideFlags: 0
@@ -1559,7 +1561,7 @@ MonoBehaviour:
   _speed: 2
   _jumpForce: 1.2
   _airSpeedMultiplier: 0.3
-  _vfx: {fileID: 0}
+  _vfx: {fileID: 23134250}
 --- !u!135 &798153286
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -31546,6 +31548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f45b24df7b0b07f47a30a46b79810bc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rotationSpeed: 2
 --- !u!1 &1681073082
 GameObject:
   m_ObjectHideFlags: 0
@@ -32389,6 +32392,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f45b24df7b0b07f47a30a46b79810bc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rotationSpeed: 2
 --- !u!4 &2070872426
 Transform:
   m_ObjectHideFlags: 0
@@ -32571,6 +32575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f45b24df7b0b07f47a30a46b79810bc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rotationSpeed: 2
 --- !u!135 &2146979729
 SphereCollider:
   m_ObjectHideFlags: 0
