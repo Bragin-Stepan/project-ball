@@ -67,7 +67,13 @@ public class Character : MonoBehaviour
         Coin coin = other.gameObject.GetComponent<Coin>();
 
         if (coin)
-            Wallet.AddCoin(coin);
+            PickUpCoin(coin);
+    }
+
+    private void PickUpCoin(Coin coin)
+    {
+        Wallet.AddCoin(coin);
+        coin.PickUp();
     }
 
     private void Move()

@@ -11,11 +11,7 @@ public class Wallet
         Coins = new List<Coin>();
     }
 
-    public void AddCoin(Coin coin)
-    {
-        coin.PickUp();
-        Coins.Add(coin);
-    }
+    public void AddCoin(Coin coin) => Coins.Add(coin);
 
     public void Clear() => Coins.Clear();
 }

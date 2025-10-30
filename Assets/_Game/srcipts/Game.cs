@@ -35,7 +35,6 @@ public class Game : MonoBehaviour
         _currentTime = 0;
 
         _player.gameObject.On();
-
         _player.Wallet.Clear();
         _player.Unfreeze();
         _player.Teleport(_playerSpawnPoint.position);
@@ -49,7 +48,7 @@ public class Game : MonoBehaviour
         if (_currentTime >= _timeToWin)
             Lose();
 
-        if (_coins.Count == _player.Wallet.Coins.Count)
+        if (_coins.Count <= _player.Wallet.Coins.Count)
             Win();
 
         _currentTime += Time.deltaTime;
