@@ -19,7 +19,6 @@ public class Character : MonoBehaviour
     private float _xInput;
     private float _zInput;
     private bool _jumpInput;
-
     private bool _isFreezed;
 
     private const string HorizontalNameInput = "Horizontal";
