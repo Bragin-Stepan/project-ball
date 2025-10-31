@@ -13,12 +13,12 @@ public class Game : MonoBehaviour
     private bool _isGameOver;
     private float _currentTime;
 
-    void Start()
+    private void Start()
     {
         Restart();
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
             Restart();
@@ -34,12 +34,9 @@ public class Game : MonoBehaviour
         _isGameOver = false;
         _currentTime = 0;
 
-        _player.gameObject.On();
-        _player.Wallet.Clear();
-        _player.Unfreeze();
-        _player.Teleport(_playerSpawnPoint.position);
+        PlayerInit();
 
-        foreach (var coin in _coins)
+        foreach (Coin coin in _coins)
             coin.gameObject.On();
     }
 
@@ -48,10 +45,18 @@ public class Game : MonoBehaviour
         if (_currentTime >= _timeToWin)
             Lose();
 
-        if (_coins.Count <= _player.Wallet.Coins.Count)
+        if (_coins.Count <= _player.Wallet.CoinsCount)
             Win();
 
         _currentTime += Time.deltaTime;
+    }
+
+    private void PlayerInit()
+    {
+        _player.gameObject.On();
+        _player.Wallet.Clear();
+        _player.Unfreeze();
+        _player.Teleport(_playerSpawnPoint.position);
     }
 
     private void Lose()
@@ -75,8 +80,7 @@ public class Game : MonoBehaviour
         if (_showDebugGui)
         {
             GUI.Label(new Rect(20, 20, 200, 20), "До порожения: " + (_timeToWin - _currentTime));
-            GUI.Label(new Rect(20, 40, 200, 20), "Монет собрано: " + _player.Wallet.Coins.Count + "/" + _coins.Count);
-            GUI.Label(new Rect(20, 60, 200, 20), "Земля: " + _player.IsGrounded);
+            GUI.Label(new Rect(20, 40, 200, 20), "Монет собрано: " + _player.Wallet.CoinsCount + "/" + _coins.Count);
         }
     }
 }

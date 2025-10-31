@@ -10,16 +10,16 @@ public class Character : MonoBehaviour
     [SerializeField] private float _airSpeedMultiplier;
 
     public Wallet Wallet { get; private set; }
-    public bool IsGrounded { get; private set; }
 
     private Rigidbody _rigidbody;
-    private Collider _collider;
-    public CharacterVFX _vfx;
+    private CharacterVFX _vfx;
+    private CoinCollector _coinCollector;
+    private GroundDetector _groundDetector;
+    private Movement _movement;
 
     private float _xInput;
     private float _zInput;
-    private bool _jumpInput;
-    private bool _isFreezed;
+    private bool _canJump;
 
     private const string HorizontalNameInput = "Horizontal";
     private const string VerticalNameInput = "Vertical";
@@ -27,11 +27,19 @@ public class Character : MonoBehaviour
 
     private void Awake()
     {
+        _groundDetector = GetComponentInChildren<GroundDetector>();
+        _coinCollector = GetComponentInChildren<CoinCollector>();
         _vfx = GetComponentInChildren<CharacterVFX>();
         _rigidbody = GetComponent<Rigidbody>();
-        _collider = GetComponent<Collider>();
+
+        _movement = new Movement(_rigidbody, _vfx);
 
         Wallet = new Wallet();
+    }
+
+    private void Start()
+    {
+        _coinCollector.Initialize(Wallet);
     }
 
     private void Update()
@@ -39,70 +47,37 @@ public class Character : MonoBehaviour
         _xInput = Input.GetAxisRaw(HorizontalNameInput);
         _zInput = Input.GetAxisRaw(VerticalNameInput);
 
-        if (Input.GetButtonDown(JumpNameInput) && IsGrounded && _isFreezed == false)
-            _jumpInput = true;
+        if (Input.GetButtonDown(JumpNameInput) && _groundDetector.IsGrounded && _movement.IsFreezed == false)
+            _canJump = true;
     }
 
     private void FixedUpdate()
     {
-        if (_isFreezed == false)
-            Move();
-
-        if (_jumpInput)
-            Jump();
+        TryMove();
+        TryJump();
     }
 
-    private void OnCollisionStay(Collision other)
+    private void TryMove()
     {
-        if (other.gameObject.GetComponent<Ground>())
-            IsGrounded = true;
+        if (_movement.IsFreezed == false)
+        {
+            float speed = _groundDetector.IsGrounded ? _speed : _speed * _airSpeedMultiplier;
+            _movement.Move(speed, _xInput, _zInput);
+        }
     }
 
-    private void OnCollisionExit(Collision other)
+    private void TryJump()
     {
-        if (other.gameObject.GetComponent<Ground>())
-            IsGrounded = false;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Coin coin = other.gameObject.GetComponent<Coin>();
-
-        if (coin)
-            PickUpCoin(coin);
-    }
-
-    private void PickUpCoin(Coin coin)
-    {
-        Wallet.AddCoin(coin);
-        coin.PickUp();
-    }
-
-    private void Move()
-    {
-        float speed = IsGrounded ? _speed : _speed * _airSpeedMultiplier;
-        _rigidbody.AddForce(_xInput * speed, 0, _zInput * speed);
-    }
-
-    private void Jump()
-    {
-        _vfx.Jump(transform.position);
-        _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
-        _jumpInput = false;
+        if (_canJump)
+        {
+            _movement.Jump(_jumpForce);
+            _canJump = false;
+        }
     }
 
     public void Teleport(Vector3 position) => transform.position = position;
 
-    public void Freeze()
-    {
-        _isFreezed = true;
-        _rigidbody.isKinematic = true;
-    }
+    public void Freeze() => _movement.Freeze();
 
-    public void Unfreeze()
-    {
-        _isFreezed = false;
-        _rigidbody.isKinematic = false;
-        _rigidbody.velocity = Vector3.zero;
-    }
+    public void Unfreeze() => _movement.Unfreeze();
 }

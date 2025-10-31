@@ -5,7 +5,7 @@ public class Coin : MonoBehaviour
 {
     [SerializeField] private float _rotationSpeed = 2;
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         HorizontalRotate();
     }
